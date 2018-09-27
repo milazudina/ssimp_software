@@ -259,7 +259,7 @@ which_build_t estimate_build_of_reference_panel (   string                      
             tbi:: read_vcf_with_tbi ref_vcf { filename_of_vcf, chrm };
 
             ref_vcf.set_region  (   chrpos{chrm, 0}
-                                ,   chrpos{chrm,std::numeric_limits<int>::max()}
+                                ,   chrpos{chrm,std::numeric_limits<double>::max()}
                                 );
             RefRecord rr;
             while(ref_vcf.read_record_into_a_RefRecord(rr) ){
@@ -873,8 +873,8 @@ chrpos  parse_chrpos_text_to_object     (string as_text, bool to_end_of_chromoso
         break; case 1: // no colon, just a chromosome
                 position.chr = lexical_cast_int_X_is_23(separated_by_colon.at(0));
                 position.pos = to_end_of_chromosome
-                                ?  std:: numeric_limits<int>::max()
-                                :  std:: numeric_limits<int>::lowest() ;
+                                ?  std:: numeric_limits<float>::max()
+                                :  std:: numeric_limits<float>::lowest() ;
         break; case 2:
                 position.chr = lexical_cast_int_X_is_23(separated_by_colon.at(0));
                 position.pos = lexical_cast_int_X_is_23(separated_by_colon.at(1));
@@ -1048,8 +1048,8 @@ void impute_all_the_regions(   string                                   filename
         /* Skip entire chromosome? if --tags.range *or* --impute.range want
          * to skip this entire chromosome, then do it.
          */
-            auto lowest_in_this_chromosome = chrpos{ chrm, std::numeric_limits<int>::lowest() };
-            auto    max_in_this_chromosome = chrpos{ chrm, std::numeric_limits<int>::max()    };
+            auto lowest_in_this_chromosome = chrpos{ chrm, std::numeric_limits<double>::lowest() };
+            auto    max_in_this_chromosome = chrpos{ chrm, std::numeric_limits<double>::max()    };
             if  (   test_if_skip( enum_tag_or_impute_t:: IMPUTE
                         , lowest_in_this_chromosome, max_in_this_chromosome)
                  || test_if_skip( enum_tag_or_impute_t:: TAG
@@ -1093,7 +1093,7 @@ void impute_all_the_regions(   string                                   filename
              */
             {
                 ref_vcf.set_region  (   chrpos{chrm,current_window_start - options:: opt_flanking_width}
-                                    ,   chrpos{chrm,std::numeric_limits<int>::max()                    }
+                                    ,   chrpos{chrm,std::numeric_limits<double>::max()                    }
                                     );
                 RefRecord rr;
                 if(!ref_vcf.read_record_into_a_RefRecord(rr) ){
